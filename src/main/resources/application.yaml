@@ -4,6 +4,7 @@ aws:
   access-key: "${ACCESS_KEY_AWS}"
   secret-key: "${SECRET_KEY_AWS}"
   region: "${AWS_REGION:us-east-1}"
+  bucket-name: "${BUCKET_NAME:my-api-bucket-hanlly}"
 spring:
   servlet:
     multipart.max-file-size: "${MAX_SIZE_FILE:1}MB"

@@ -7,8 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class KafkaEventMessage {
     private String bucketName;
-    private String fileName;
-    private Long size;
+    private String action;
 
 
 

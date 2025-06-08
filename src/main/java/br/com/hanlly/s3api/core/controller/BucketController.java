@@ -32,8 +32,8 @@ public class BucketController {
     @Value("${spring.kafka.topics.object-topic}")
     public String objectTopic;
 
-
-    public static final String AWS_BUCKET = "my-api-bucket-hanlly";
+    @Value("${spring.}")
+    public String AWS_BUCKET;
     public static final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
@@ -53,8 +53,7 @@ public class BucketController {
         //write event to kafka as follows
         KafkaEventMessage message = new KafkaEventMessage(
                 objectRequest.bucket(),
-                file.getOriginalFilename(),
-                file.getSize()
+                "object with the name ".concat(file.getOriginalFilename()).concat(" was created!")
         );
 
         try{
@@ -87,6 +86,20 @@ public class BucketController {
         //get all first 10 files
         List<AwsS3ObjectDTO> listFiles = awsService.getObjectInBucket(fileName);
 
+
+        KafkaEventMessage message = new KafkaEventMessage(
+                AWS_BUCKET,
+                "Listando objeto(s) do bucket ".concat(AWS_BUCKET)
+        );
+
+        try{
+            String kafkaMessage = mapper.writeValueAsString(message);
+            kafkaTemplate.send(bucketTopic, kafkaMessage);
+        } catch (JsonProcessingException exception){
+            System.out.println(exception.getMessage());
+        }
+
+
         CustomResponse customResponse = new CustomResponse(
                 "Sucess",
                 "Arquivos listados com sucesso",
@@ -108,6 +121,19 @@ public class BucketController {
     @DeleteMapping("/{fileName}")
     public ResponseEntity<CustomResponse> deleteObject(@PathVariable(name = "fileName") String fileName){
         awsService.deleteObjectInBucket(fileName);
+
+
+        KafkaEventMessage message = new KafkaEventMessage(
+                AWS_BUCKET,
+                "Object with name ".concat(fileName).concat(" was deleted!")
+        );
+
+        try{
+            String kafkaMessage = mapper.writeValueAsString(message);
+            kafkaTemplate.send(bucketTopic, kafkaMessage);
+        } catch (JsonProcessingException exception){
+            System.out.println(exception.getMessage());
+        }
 
         CustomResponse customResponse = new CustomResponse(
                 "Success",
