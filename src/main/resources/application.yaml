@@ -1,0 +1,15 @@
+server:
+  port: 3000
+aws:
+  access-key: "${ACCESS_KEY_AWS}"
+  secret-key: "${SECRET_KEY_AWS}"
+  region: "us-east-1"
+spring:
+  servlet:
+    multipart.max-file-size: "1MB"
+    multipart.max-request-size: "1MB"
+  kafka:
+    bootstrap-servers: "${KAFKA_SERVER:192.168.0.244:9092}"
+    topics:
+      bucket-topic: "bucket.topic"
+      object-topic: "object.topic"
