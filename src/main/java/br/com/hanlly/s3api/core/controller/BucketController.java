@@ -32,7 +32,7 @@ public class BucketController {
     @Value("${spring.kafka.topics.object-topic}")
     public String objectTopic;
 
-    @Value("${spring.}")
+    @Value("${aws.bucket-name}")
     public String AWS_BUCKET;
     public static final ObjectMapper mapper = new ObjectMapper();
 
