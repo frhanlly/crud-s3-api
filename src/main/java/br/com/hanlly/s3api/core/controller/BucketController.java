@@ -89,7 +89,7 @@ public class BucketController {
 
         KafkaEventMessage message = new KafkaEventMessage(
                 AWS_BUCKET,
-                "Listando objeto(s) do bucket ".concat(AWS_BUCKET)
+                "Listed all objects from bucket ".concat(AWS_BUCKET)
         );
 
         try{
